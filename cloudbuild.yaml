@@ -6,6 +6,7 @@ steps:
   args: ['push','asia-south1-docker.pkg.dev/gcp-cicd-demo-480118/pythonapp/pythonimage:latest']
 
 - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+  entrypoint: gcloud
   args:
   - 'run'
   - 'deploy'

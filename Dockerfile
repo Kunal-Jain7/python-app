@@ -3,5 +3,6 @@ WORKDIR /app
 ADD . /app
 RUN pip install --trusted-host pypi.python.org Flask
 ENV NAME Rahul
-CMD ["python", "/src/app.py"]
+EXPOSE 8080
+CMD ["python", "src/app.py"]
 

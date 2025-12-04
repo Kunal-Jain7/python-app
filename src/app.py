@@ -4,7 +4,7 @@ import os
 app = Flask(__name__)
 
 @app.route("/")
-def wish();
+def wish():
     message = "Happy Birthday {name}"
     return message.format(name=os.getenv("NAME", "Kunal"))
 

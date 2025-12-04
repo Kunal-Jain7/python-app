@@ -4,3 +4,14 @@ steps:
 
 - name: 'gcr.io/cloud-builders/docker'
   args: ['push','asia-south1-docker.pkg.dev/gcp-cicd-demo-480118/pythonapp/pythonimage:latest']
+
+- name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+  args:
+  - 'run'
+  - 'deploy'
+  - 'pyflaskapp'
+  - '--image'
+  - 'asia-south1-docker.pkg.dev/gcp-cicd-demo-480118/pythonapp/pythonimage:latest'
+  - '--region'
+  - 'asia-south1'
+  - '--allow-unauthenticated'

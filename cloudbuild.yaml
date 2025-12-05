@@ -1,9 +1,9 @@
 steps:
 - name: 'gcr.io/cloud-builders/docker'
-  args: ['build','-t','${_LOCATION}/${PROJECT_ID}/${IMAGE}','.']
+  args: ['build','-t','${_LOCATION}/${PROJECT_ID}/${_IMAGE}','.']
 
 - name: 'gcr.io/cloud-builders/docker'
-  args: ['push','${_LOCATION}/${PROJECT_ID}/${IMAGE}']
+  args: ['push','${_LOCATION}/${PROJECT_ID}/${_IMAGE}']
 
 - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
   entrypoint: gcloud
@@ -12,7 +12,7 @@ steps:
   - 'deploy'
   - 'pyflaskapp'
   - '--image'
-  - '${_LOCATION}/${PROJECT_ID}/${IMAGE}'
+  - '${_LOCATION}/${PROJECT_ID}/${_IMAGE}'
   - '--region'
   - 'asia-south1'
   - '--allow-unauthenticated'

@@ -1,25 +1,27 @@
 steps:
 - name: 'gcr.io/cloud-builders/docker'
-  args: ['build','-t','${_LOCATION}/${PROJECT_ID}/${_IMAGE}','.']
+  entrypoint: 'bash'
+  args: ['-c', 'docker login --username=$$DOCKER_USERNAME --password=$$DOCKER_PASSWORD']
+  secretEnv: ['DOCKER_USERNAME', 'DOCKER_PASSWORD']
 
 - name: 'gcr.io/cloud-builders/docker'
-  args: ['push','${_LOCATION}/${PROJECT_ID}/${_IMAGE}']
+  entrypoint: 'bash'
+  args: ['-c', 'docker build -t $$DOCKER_USERNAME/pythongcpapp:latest .']
+  secretEnv: ['DOCKER_USERNAME']
 
-- name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
-  entrypoint: gcloud
-  args:
-  - 'run'
-  - 'deploy'
-  - 'pyflaskapp'
-  - '--image'
-  - '${_LOCATION}/${PROJECT_ID}/${_IMAGE}'
-  - '--region'
-  - 'asia-south1'
-  - '--allow-unauthenticated'
+- name: 'gcr.io/cloud-builders/docker'
+  entrypoint: 'bash'
+  args: ['-c', 'docker push $$DOCKER_USERNAME/pythongcpapp:latest']
+  secretEnv: ['DOCKER_USERNAME']
 
-substitutions:
-  _IMAGE: pythonapp/pythonimage:latest
-  _LOCATION: asia-south1-docker.pkg.dev
+
+availableSecrets:
+  secretManager:
+  - versionName: projects/254859429574/secrets/USERNAME/versions/1
+    env: 'DOCKER_USERNAME'
+
+  - versionName: projects/254859429574/secrets/PASSWORD/versions/1
+    env: 'DOCKER_PASSWORD'
 
 options:
   logging: CLOUD_LOGGING_ONLY

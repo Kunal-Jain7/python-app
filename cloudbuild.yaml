@@ -1,9 +1,9 @@
 steps:
 - name: 'gcr.io/cloud-builders/docker'
-  args: ['build','-t','asia-south1-docker.pkg.dev/gcp-cicd-demo-480118/pythonapp/pythonimage:latest','.']
+  args: ['build','-t','${_LOCATION}/${PROJECT_ID}/${IMAGE}','.']
 
 - name: 'gcr.io/cloud-builders/docker'
-  args: ['push','asia-south1-docker.pkg.dev/gcp-cicd-demo-480118/pythonapp/pythonimage:latest']
+  args: ['push','${_LOCATION}/${PROJECT_ID}/${IMAGE}']
 
 - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
   entrypoint: gcloud
@@ -12,10 +12,14 @@ steps:
   - 'deploy'
   - 'pyflaskapp'
   - '--image'
-  - 'asia-south1-docker.pkg.dev/gcp-cicd-demo-480118/pythonapp/pythonimage:latest'
+  - '${_LOCATION}/${PROJECT_ID}/${IMAGE}'
   - '--region'
   - 'asia-south1'
   - '--allow-unauthenticated'
+
+substitutions:
+  _IMAGE: pythonapp/pythonimage:latest
+  _LOCATION: asia-south1-docker.pkg.dev
 
 options:
   logging: CLOUD_LOGGING_ONLY
